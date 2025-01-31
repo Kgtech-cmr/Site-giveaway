@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KERM GIVEAWAY</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #001f3f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #111;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .container h1 {
+            text-align: center;
+            color: #00c3ff;
+        }
+        .container input, .container button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        .container input {
+            background: #222;
+            color: white;
+        }
+        .container button {
+            background: #00c3ff;
+            color: white;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background: #009acd;
+        }
+        .notification {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥷🏽Kerm Giveaway🥷🏽</h1>
+        <input type="text" id="name" placeholder="Enter Name (Optional)" />
+        <input type="text" id="sessionId" placeholder="Enter Session ID" required />
+        <input type="text" id="phone" placeholder="Enter Phone Number with Dialing Code" required />
+        <button onclick="submitForm()">Send Message</button>
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script>
+        async function submitForm() {
+            const name = document.getElementById("name").value;
+            const sessionId = document.getElementById("sessionId").value;
+            const phone = document.getElementById("phone").value;
+
+            if (!sessionId || !phone) {
+                alert("Session ID and Phone Number are required!");
+                return;
+            }
+
+            const response = await fetch("http://localhost:5000/api/save", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name, sessionId, phone }),
+            });
+
+            const result = await response.json();
+            const notification = document.getElementById("notification");
+
+            if (result.success) {
+                notification.textContent = "Data saved successfully!";
+            } else {
+                notification.textContent = "Error saving data. Try again!";
+            }
+        }
+    </script>
+</body>
+</html>
